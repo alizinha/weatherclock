@@ -9,6 +9,23 @@ import java.util.Calendar;
 public class Main {
 
     /**
+     * Jae made this - Returns sunset time for the current day.
+     */
+    public static Calendar getSunrise() {
+        URL url = HTTP.stringToURL("http://api.openweathermap.org/data/2.5/weather?q=New%20York,NY");
+        String doc = HTTP.get(url);
+        JSONObject obj = (JSONObject) JSONValue.parse(doc);
+
+        JSONObject sys = (JSONObject) obj.get("sys");
+        if (sys == null)
+            return null;
+        Long sunriseTimestamp = (Long) sys.get("sunrise");
+        if (sunriseTimestamp == null)
+            return null;
+        return DateTime.fromTimestamp(sunriseTimestamp);
+    }
+
+    /**
      * SAMPLE CODE: Returns sunset time for the current day.
      */
     public static Calendar getSunset() {
@@ -24,6 +41,8 @@ public class Main {
             return null;
         return DateTime.fromTimestamp(sunsetTimestamp);
     }
+
+
 
     /**
      * SAMPLE CODE: Displays a very primitive clock.
@@ -54,20 +73,22 @@ public class Main {
         // Don't show the cursor.
         terminal.hideCursor();
 
+        // Jae MADE THIS - Get sunrise time for the current day.
+        Calendar sunrise = getSunrise();
+
         // Get sunset time for the current day.
         Calendar sunset = getSunset();
 
         int xPosition = 1 + numCols / 2 - 5;
-        while (true) {
+        while (true)
+        {
             // Get the current date and time.
             Calendar cal = Calendar.getInstance();
 
             // Write the time, including seconds, in white.
             String time = DateTime.formatTime(cal, true);
-            if (cal.get(Calendar.HOUR_OF_DAY) >= 12)
-                time += " PM";
-            else
-                time += " AM";
+            if(cal.get(Calendar.HOUR_OF_DAY) >= 12) time += " PM";
+            else time += " AM";
             terminal.setTextColor(AnsiTerminal.Color.WHITE);
             terminal.moveTo(3, xPosition);
             terminal.write(time);
@@ -94,8 +115,31 @@ public class Main {
             terminal.moveTo(9, xPosition - 2);
             terminal.write("sunset at " + sunsetTime);
 
-            // Pause for one second, and do it again.
+            //Write if DST or not on this date. -- Allison B. wrote this portion below and also in DST.java
+            String dst = DST.isDST("");
+            terminal.setTextColor(AnsiTerminal.Color.BLUE, false);
+            terminal.setBackgroundColor(AnsiTerminal.Color.GREEN);
+            terminal.moveTo(11, xPosition);
+            terminal.write(dst);
+
+            //Write the holiday if today is a national holiday. --Allison working on this.
+            //**need to add a String here that is empty to start**
+            terminal.setTextColor(AnsiTerminal.Color.BLUE, false);
+            terminal.setBackgroundColor(AnsiTerminal.Color.GREEN);
+            terminal.moveTo(11, xPosition);
+            //terminal.write(holidays);
+            //    HashMap<Calendar, String> holidays = Holidays.getHolidays("National holiday");
+            //    String holiday = holidays.get(date);
+            //    System.out.println("National Holiday:    " + holiday)
+
+            //Print a mini-calendar
+
+
+
+
             DateTime.pause(1.0);
         }
     }
 }
+
+
