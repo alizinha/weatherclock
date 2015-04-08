@@ -42,14 +42,16 @@ public class Holidays {
     public static boolean isHoliday(Calendar date)
     {
         HashMap<Calendar, String> holidayMap = getHolidays("National holiday");
-        for (Map.Entry<Calendar, String> e : holidayMap.entrySet()) {
-            Calendar c = e.getKey();
-            System.out.println(DateTime.formatDate(c));
-        }
+//        for (Map.Entry<Calendar, String> e : holidayMap.entrySet()) {
+//            Calendar c = e.getKey();
+//            System.out.print(DateTime.formatDate(c));
+//            System.out.print(e.getValue());
+//            System.out.println();
+//        }
 
-        String holiday = holidayMap.get(date);
+        return holidayMap.containsKey(date);
 
-        return false;
+
     }
 
 
@@ -59,10 +61,10 @@ public class Holidays {
 //    System.out.println("National Holiday:    " + holiday)
 
 
-
-    public static void main(String[] args){
-        Calendar c = DateTime.parseDate("2012-07-04");
-        System.out.println(c);
-        System.out.println(Holidays.isHoliday(c));
-    }
+// Used this to test things (Allison):
+//    public static void main(String[] args){
+//        Calendar c = DateTime.parseDate("2012-12-25");
+//        System.out.println(c);
+//        System.out.println(Holidays.isHoliday(c));
+//    }
 }
