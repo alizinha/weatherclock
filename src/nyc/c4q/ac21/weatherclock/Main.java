@@ -5,6 +5,7 @@ import org.json.simple.JSONValue;
 
 import java.net.URL;
 import java.util.Calendar;
+import java.util.HashMap;
 
 public class Main {
 
@@ -129,11 +130,17 @@ public class Main {
             terminal.setBackgroundColor(AnsiTerminal.Color.GREEN);
             terminal.moveTo(13, xPosition);
             terminal.write(Holidays.getHolidayStatus(cal));
-            //    HashMap<Calendar, String> holidays = Holidays.getHolidays("National holiday");
-            //    String holiday = holidays.get(date);
-            //    System.out.println("National Holiday:    " + holiday)
 
-            //Print a mini-calendar
+            //todo allison print mini calendar
+
+            //todo allison print Day of Week and full date
+            //
+            Object key = cal.get(Calendar.DAY_OF_WEEK);
+
+            HashMap<Integer, String> hash = DateTime.getDayOfWeekNames();
+            String currentDAY = hash.get(key);
+
+
 
 
 
