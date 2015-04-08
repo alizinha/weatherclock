@@ -53,18 +53,14 @@ public class Holidays {
 
 
     }
+    public static String getHolidayStatus(Calendar date) {
+        String status = "";
+        if (isHoliday(date))
+            status = getHolidays("National holiday").get(date);
+        else status = "No holiday.";
+        return status;
+    }
 
 
-//    3. Show whether this is a national holiday, and if so, which.
-//    HashMap<Calendar, String> holidays = Holidays.getHolidays("National holiday");
-//    String holiday = holidays.get(date);
-//    System.out.println("National Holiday:    " + holiday)
 
-
-// Used this to test things (Allison):
-//    public static void main(String[] args){
-//        Calendar c = DateTime.parseDate("2012-12-25");
-//        System.out.println(c);
-//        System.out.println(Holidays.isHoliday(c));
-//    }
 }

@@ -84,6 +84,7 @@ public class Main {
         {
             // Get the current date and time.
             Calendar cal = Calendar.getInstance();
+  //          Calendar cal = DateTime.parseDate("2012-07-04");//used this date to test holiday functionality
 
             // Write the time, including seconds, in white.
             String time = DateTime.formatTime(cal, true);
@@ -116,7 +117,7 @@ public class Main {
             terminal.write("sunset at " + sunsetTime);
 
             //Write if DST or not on this date. -- Allison B. wrote this portion below and also in DST.java
-            String dst = DST.isDST("");
+            String dst = DST.getDSTStatus(cal);
             terminal.setTextColor(AnsiTerminal.Color.BLUE, false);
             terminal.setBackgroundColor(AnsiTerminal.Color.GREEN);
             terminal.moveTo(11, xPosition);
@@ -126,8 +127,8 @@ public class Main {
             //**need to add a String here that is empty to start**
             terminal.setTextColor(AnsiTerminal.Color.BLUE, false);
             terminal.setBackgroundColor(AnsiTerminal.Color.GREEN);
-            terminal.moveTo(11, xPosition);
-            //terminal.write(holidays);
+            terminal.moveTo(13, xPosition);
+            terminal.write(Holidays.getHolidayStatus(cal));
             //    HashMap<Calendar, String> holidays = Holidays.getHolidays("National holiday");
             //    String holiday = holidays.get(date);
             //    System.out.println("National Holiday:    " + holiday)

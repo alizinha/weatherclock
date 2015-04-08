@@ -56,10 +56,11 @@ public class DST
         return date.compareTo(dstStart) == 1 && date.compareTo(dstEnd) == - 1;
     }
 // Allison added this portion below (and also added the call in the Main.java class).
-    public static String isDST(String dst)
+    public static String getDSTStatus(Calendar date)
     {
+        String dst = "";
 
-        if(isDST(Calendar.getInstance()) == true)
+        if(isDST(date) == true)
             dst = "DST is in effect.";
         else
             dst= "DST is not in effect.";
