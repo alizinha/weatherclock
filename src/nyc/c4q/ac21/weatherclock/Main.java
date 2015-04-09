@@ -200,26 +200,26 @@ public class Main {
             terminal.moveTo(14, xPosition + 30);
             terminal.write("Humidity: " + String.valueOf(currentWeatherData.getHumidity()));
 
-                        // Get weather condition ASCII art. (Jaellys)
-                        terminal.setTextColor(AnsiTerminal.Color.WHITE, false);
-                        terminal.moveTo(20, 0);
+            // Get weather condition ASCII art. (Jaellys)
+            terminal.setTextColor(AnsiTerminal.Color.WHITE, false);
+            terminal.moveTo(20, 0);
 
-                        // Displaying each frame. (Jaellys)
-                        if (numFrames % 6 == 0) {
-                            String tmp = WeatherGetAni.getAscii(0);
-                            terminal.write(tmp);
-                        }
-                        else if (numFrames % 6 == 2) {
-                            String tmp = WeatherGetAni.getAscii(1);
-                            terminal.write(tmp);
-                        }
-                        else if (numFrames % 6 == 4) {
-                            String tmp = WeatherGetAni.getAscii(2);
-                            terminal.write(tmp);
-                        }
-                        numFrames++;
+            // Displaying each frame. (Jaellys)
+            if (numFrames % 6 == 0) {
+                String tmp = WeatherGetAni.getAscii(0);
+                terminal.write(tmp);
+            }
+            else if (numFrames % 6 == 2) {
+                String tmp = WeatherGetAni.getAscii(1);
+                terminal.write(tmp);
+            }
+            else if (numFrames % 6 == 4) {
+                String tmp = WeatherGetAni.getAscii(2);
+                terminal.write(tmp);
+            }
+            numFrames++;
 
-            terminal.moveTo(30, xPosition + 12);
+            terminal.moveTo(5, 1);
             //Writing time in big numbers
             //This code will use the hashmap generated from the bigLetters method to print out
             //the appropriate big number strings that correspond with the current time
