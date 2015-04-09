@@ -2,7 +2,9 @@ package nyc.c4q.ac21.weatherclock;
 
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
+import org.json.simple.parser.ParseException;
 
+import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -16,7 +18,7 @@ import java.util.Scanner;
 public class Main {
 
     /**
-     * Jae made this - Returns sunrise time for the current day.
+     * Returns sunrise time for the current day (Jaellys).
      */
     public static Calendar getSunrise() {
         URL url = HTTP.stringToURL("http://api.openweathermap.org/data/2.5/weather?q=New%20York,NY");
@@ -49,12 +51,10 @@ public class Main {
         return DateTime.fromTimestamp(sunsetTimestamp);
     }
 
-
-
     /**
      * SAMPLE CODE: Displays a very primitive clock.
      */
-    public static void main(String[] args) throws FileNotFoundException
+    public static void main(String[] args) throws IOException, ParseException
     {
         //prompt user to choose a 12 or 24-hour format to display a clock--Allison added
         Scanner scan = new Scanner(System.in);
@@ -65,12 +65,12 @@ public class Main {
         }
         int preferredClock = scan.nextInt();
 
-
         boolean militaryTime = true;
 
         if (preferredClock == 24) {
             militaryTime = true;
-          } else if(preferredClock == 12)
+        }
+        else if(preferredClock == 12)
         {
             militaryTime = false;
         }
@@ -79,11 +79,13 @@ public class Main {
             System.out.println("Please enter \"12\" or \"24\" only! Thank you.");
         }
 
-
-
-
-
-
+        // Prompt user for city -- Madelyn
+        System.out.println("Which city would you like to get information for?");
+        String input=scan.next();
+        if (input.substring(0).equals(" ")){
+            input.replace(" ", "%20");
+        }
+        String goTo = ("http://api.openweathermap.org/data/2.5/weather?q=" + input);
 
 
         // Find out the size of the terminal currently.
@@ -96,8 +98,10 @@ public class Main {
         // When the program shuts down, reset the terminal to its original state.
         // This code makes sure the terminal is reset even if you kill your
         // program by pressing Control-C.
-        Runtime.getRuntime().addShutdownHook(new Thread() {
-            public void run() {
+        Runtime.getRuntime().addShutdownHook(new Thread()
+        {
+            public void run()
+            {
                 terminal.showCursor();
                 terminal.reset();
                 terminal.scroll(1);
@@ -111,38 +115,39 @@ public class Main {
         // Don't show the cursor.
         terminal.hideCursor();
 
-        // Jae MADE THIS - Get sunrise time for the current day.
+        // Get sunrise time for the current day (Jaellys).
         Calendar sunrise = getSunrise();
 
         // Get sunset time for the current day.
         Calendar sunset = getSunset();
 
         int xPosition = 1 + numCols / 2 - 5;
+        int numFrames = 0; // Needed for displaying weather ASCII.
         while (true)
         {
             // Get the current date and time.
             Calendar cal = Calendar.getInstance();
-  //          Calendar cal = DateTime.parseDate("2012-07-04");//used this date to test holiday functionality
+            //          Calendar cal = DateTime.parseDate("2012-07-04");//used this date to test holiday functionality
 
-            // Write the time, including seconds, in white.
-            String time = DateTime.formatTime(cal, true);
-            if(cal.get(Calendar.HOUR_OF_DAY) >= 12) time += " PM";
-            else time += " AM";
-            terminal.setTextColor(AnsiTerminal.Color.WHITE);
-            terminal.moveTo(3, xPosition);
-            terminal.write(time);
+            //            // Write the time, including seconds, in white.
+            //            String time = DateTime.formatTime(cal, true);
+            //            if(cal.get(Calendar.HOUR_OF_DAY) >= 12) time += " PM";
+            //            else time += " AM";
+            //            terminal.setTextColor(AnsiTerminal.Color.WHITE);
+            //            terminal.moveTo(3, xPosition + 30);
+            //            terminal.write(time);
 
-            // Write the date in gray.
-            String date = DateTime.formatDate(cal);
-            terminal.setTextColor(AnsiTerminal.Color.WHITE, false);
-            terminal.moveTo(5, xPosition);
-            terminal.write(date);
+            //            // Write the date in gray.
+            //            String date = DateTime.formatDate(cal);
+            //            terminal.setTextColor(AnsiTerminal.Color.WHITE, false);
+            //            terminal.moveTo(4, xPosition + 30);
+            //            terminal.write(date);
 
             // Write sunrise time in dark yellow. -- Allison
             String sunriseTime = DateTime.formatTime(sunrise, false);
             terminal.setTextColor(AnsiTerminal.Color.YELLOW, false);
-            terminal.moveTo(7, xPosition - 2);
-            terminal.write("sunrise at " + sunriseTime);
+            terminal.moveTo(5, xPosition + 30);
+            terminal.write("Sunrise: " + sunriseTime + " AM");
 
             // Set the background color back to black.
             terminal.setBackgroundColor(AnsiTerminal.Color.BLACK);
@@ -150,46 +155,54 @@ public class Main {
             // Write sunset time in dark yellow.
             String sunsetTime = DateTime.formatTime(sunset, false);
             terminal.setTextColor(AnsiTerminal.Color.YELLOW, false);
-            terminal.moveTo(9, xPosition - 2);
-            terminal.write("sunset at " + sunsetTime);
+            terminal.moveTo(6, xPosition + 30);
+            terminal.write("Sunset: " + sunsetTime + " PM");
 
             //Write if DST or not on this date. -- Allison B. wrote this portion below and also in DST.java
             String dst = DST.getDSTStatus(cal);
-            terminal.setTextColor(AnsiTerminal.Color.BLUE, false);
-            terminal.setBackgroundColor(AnsiTerminal.Color.GREEN);
-            terminal.moveTo(11, xPosition);
+            terminal.setTextColor(AnsiTerminal.Color.WHITE, false);
+            //            terminal.setBackgroundColor(AnsiTerminal.Color.GREEN);
+            terminal.moveTo(7, xPosition + 30);
             terminal.write(dst);
 
             //Write the holiday if today is a national holiday. --Allison did this.
             //TODO--JAE please note that this currently posts "No holiday" when there is not a holiday.
             //I wanted you to be able to see it in the terminal which is why I left it that way but feel
             //free to change it so that it prints nothing on days when there is no holiday.
-            terminal.setTextColor(AnsiTerminal.Color.BLUE, false);
-            terminal.setBackgroundColor(AnsiTerminal.Color.GREEN);
-            terminal.moveTo(13, xPosition);
+            terminal.setTextColor(AnsiTerminal.Color.WHITE, false);
+            //            terminal.setBackgroundColor(AnsiTerminal.Color.GREEN);
+            terminal.moveTo(8, xPosition + 30);
             terminal.write(Holidays.getHolidayStatus(cal));
 
             //allison-- print mini calendar
             //TODO--JAE, please note that the alignment on this is wacky right now, so the name of the month
             //and the year aren't directly above the "Su Mo Tu We Th Fr Sa". I figured it'll get moved around
             //anyway so I left it as is.
-            terminal.setTextColor(AnsiTerminal.Color.BLUE, false);
-            terminal.setBackgroundColor(AnsiTerminal.Color.GREEN);
-            terminal.moveTo(15, xPosition);
-            CalendarPrinter.printMonthCalendar(cal);
+            //            terminal.setTextColor(AnsiTerminal.Color.BLUE, false);
+            //            terminal.setBackgroundColor(AnsiTerminal.Color.GREEN);
+            //            terminal.moveTo(15, xPosition + 30);
+            //            CalendarPrinter.printMonthCalendar(cal);
 
             //allison--print Day of week, Name of month, date, and year (e.g.: "Wednesday, April 8, 2015")
-
             String dayOfWeek = DateTime.getDayOfWeekNames().get(cal.get(Calendar.DAY_OF_WEEK));
             String nameOfMonth = DateTime.getMonthNames().get(cal.get(Calendar.MONTH));
-            terminal.setTextColor(AnsiTerminal.Color.BLUE, false);
-            terminal.setBackgroundColor(AnsiTerminal.Color.GREEN);
-            terminal.moveTo(17, xPosition);
+            terminal.setTextColor(AnsiTerminal.Color.WHITE, false);
+            //            terminal.setBackgroundColor(AnsiTerminal.Color.GREEN);
+            terminal.moveTo(9, xPosition + 30);
             terminal.write(dayOfWeek + ", " + nameOfMonth + " " + DateTime.allisonsMethod(cal));
+
+            WeatherData currentWeatherData = new WeatherData(goTo);
+            terminal.setTextColor(AnsiTerminal.Color.WHITE);
+            terminal.moveTo(12, xPosition + 30);
+            terminal.write("Temp: " + String.valueOf(currentWeatherData.getTemp()));
+            terminal.moveTo(13, xPosition + 30);
+            terminal.write("Pressure: " + String.valueOf(currentWeatherData.getPressure()));
+            terminal.moveTo(14, xPosition + 30);
+            terminal.write("Humidity: " + String.valueOf(currentWeatherData.getHumidity()));
 
             //Writing time in big numbers
             //This code will use the hashmap generated from the bigLetters method to print out
-            //the appropiate big number strings that correspond with the current time
+            //the appropriate big number strings that correspond with the current time
             //boolean militaryTime=false;
             String formatTime="";
             int hours=cal.get(Calendar.HOUR);
@@ -202,7 +215,7 @@ public class Main {
             else
                 formatTime=new SimpleDateFormat("HH:mm").format(cal.getTime());
 
-            //Next if user did not request military time, then update am_pm variable to the appropiate value
+            //Next if user did not request military time, then update am_pm variable to the appropriate value
 
             if(militaryTime==false){
                 if(hours<12)
@@ -276,7 +289,6 @@ public class Main {
                         System.out.print(numbers.get("12").get(i));
                     System.out.println();
                 }
-
                 else
                 {
                     System.out.print(numbers.get(hour.substring(0,1)).get(i)+"  ");
@@ -288,16 +300,27 @@ public class Main {
                 }
             }
 
+            //            // Get weather condition ASCII art. (Jaellys)
+            //            terminal.setTextColor(AnsiTerminal.Color.WHITE, false);
+            //            terminal.moveTo(20, 0);
+            //
+            //            // Displaying each frame. (Jaellys)
+            //            if (numFrames % 6 == 0) {
+            //                String tmp = WeatherGetAni.getAscii(0);
+            //                terminal.write(tmp);
+            //            }
+            //            else if (numFrames % 6 == 2) {
+            //                String tmp = WeatherGetAni.getAscii(1);
+            //                terminal.write(tmp);
+            //            }
+            //            else if (numFrames % 6 == 4) {
+            //                String tmp = WeatherGetAni.getAscii(2);
+            //                terminal.write(tmp);
+            //            }
+            //            numFrames++;
 
-
-
-
-
-
-
-            DateTime.pause(1.0);
+            // Pause for one second, and do it again.
+            DateTime.pause(.5);
         }
     }
 }
-
-
