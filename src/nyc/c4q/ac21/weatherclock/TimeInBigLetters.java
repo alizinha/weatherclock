@@ -16,7 +16,7 @@ public class TimeInBigLetters
         HashMap<String, ArrayList<String>> printSimpleTime = new HashMap<String, ArrayList<String>>();
 
         ArrayList<String> zero = new ArrayList<String>();
-        zero.add(" .d8░88b. ");
+        zero.add(" .d8888b. ");
         zero.add("d88P  Y88b");
         zero.add("888    888");
         zero.add("888    888");
