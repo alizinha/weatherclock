@@ -188,7 +188,7 @@ public class Main {
             String nameOfMonth = DateTime.getMonthNames().get(cal.get(Calendar.MONTH));
             terminal.setTextColor(AnsiTerminal.Color.WHITE, false);
             //            terminal.setBackgroundColor(AnsiTerminal.Color.GREEN);
-            terminal.moveTo(9, xPosition + 30);
+            terminal.moveTo(14, 93);
             terminal.write(dayOfWeek + ", " + nameOfMonth + " " + DateTime.allisonsMethod(cal));
 
             WeatherData currentWeatherData = new WeatherData(goTo);
