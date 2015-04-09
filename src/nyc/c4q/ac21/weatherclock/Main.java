@@ -4,8 +4,14 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Random;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
 
 public class Main {
 
@@ -48,7 +54,38 @@ public class Main {
     /**
      * SAMPLE CODE: Displays a very primitive clock.
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException
+    {
+        //prompt user to choose a 12 or 24-hour format to display a clock--Allison added
+        Scanner scan = new Scanner(System.in);
+        System.out.println("Type in \"12\" or \"24\" to choose preferred clock format: ");
+        while(!scan.hasNextInt()) {
+            System.out.println("Please enter \"12\" or \"24\" only! Thank you.");
+            scan.next();
+        }
+        int preferredClock = scan.nextInt();
+
+
+        boolean militaryTime = true;
+
+        if (preferredClock == 24) {
+            militaryTime = true;
+          } else if(preferredClock == 12)
+        {
+            militaryTime = false;
+        }
+        else
+        {
+            System.out.println("Please enter \"12\" or \"24\" only! Thank you.");
+        }
+
+
+
+
+
+
+
+
         // Find out the size of the terminal currently.
         final int numCols = TerminalSize.getNumColumns();
         final int numRows = TerminalSize.getNumLines();
@@ -124,12 +161,18 @@ public class Main {
             terminal.write(dst);
 
             //Write the holiday if today is a national holiday. --Allison did this.
+            //TODO--JAE please note that this currently posts "No holiday" when there is not a holiday.
+            //I wanted you to be able to see it in the terminal which is why I left it that way but feel
+            //free to change it so that it prints nothing on days when there is no holiday.
             terminal.setTextColor(AnsiTerminal.Color.BLUE, false);
             terminal.setBackgroundColor(AnsiTerminal.Color.GREEN);
             terminal.moveTo(13, xPosition);
             terminal.write(Holidays.getHolidayStatus(cal));
 
             //allison-- print mini calendar
+            //TODO--JAE, please note that the alignment on this is wacky right now, so the name of the month
+            //and the year aren't directly above the "Su Mo Tu We Th Fr Sa". I figured it'll get moved around
+            //anyway so I left it as is.
             terminal.setTextColor(AnsiTerminal.Color.BLUE, false);
             terminal.setBackgroundColor(AnsiTerminal.Color.GREEN);
             terminal.moveTo(15, xPosition);
@@ -143,6 +186,107 @@ public class Main {
             terminal.setBackgroundColor(AnsiTerminal.Color.GREEN);
             terminal.moveTo(17, xPosition);
             terminal.write(dayOfWeek + ", " + nameOfMonth + " " + DateTime.allisonsMethod(cal));
+
+            //Writing time in big numbers
+            //This code will use the hashmap generated from the bigLetters method to print out
+            //the appropiate big number strings that correspond with the current time
+            //boolean militaryTime=false;
+            String formatTime="";
+            int hours=cal.get(Calendar.HOUR);
+            int AMorPM=cal.get(Calendar.AM_PM);
+            String ampmString = "";
+
+            //Determine if user asked for military time or not, then format time accordingly
+            if(!militaryTime)
+                formatTime=DateTime.formatTime(cal,false);
+            else
+                formatTime=new SimpleDateFormat("HH:mm").format(cal.getTime());
+
+            //Next if user did not request military time, then update am_pm variable to the appropiate value
+
+            if(militaryTime==false){
+                if(hours<12)
+                {
+                    if(AMorPM==1)
+                    {
+                        ampmString="PM";
+                    }
+                }
+                else
+                {
+                    ampmString="AM";
+                }
+            }
+
+            //get hashmap
+            HashMap<String, ArrayList<String>> numbers=TimeInBigLetters.bigNumbers();
+
+            //get the hours and minutes from the current time String and save to variables
+            int semiColon=formatTime.indexOf(":");
+            String hour=formatTime.substring(0,semiColon);
+            String minutes=formatTime.substring(semiColon+1);
+
+            //run a loop to print out the time in big letters
+            System.out.println();
+            for(int i=0;i<8;i++)
+            {
+                Random random = new Random();
+                int color = random.nextInt(6);
+                if (color == 0)
+                    terminal.setTextColor(AnsiTerminal.Color.GREEN, false);
+                else if (color == 1)
+                    terminal.setTextColor(AnsiTerminal.Color.RED, false);
+                else if (color == 2)
+                    terminal.setTextColor(AnsiTerminal.Color.YELLOW, false);
+                else if (color == 3)
+                    terminal.setTextColor(AnsiTerminal.Color.BLUE, false);
+                else if (color == 4)
+                    terminal.setTextColor(AnsiTerminal.Color.MAGENTA, false);
+                else if (color == 5)
+                    terminal.setTextColor(AnsiTerminal.Color.CYAN, false);
+                else
+                    terminal.setTextColor(AnsiTerminal.Color.WHITE, false);
+
+
+                if(hour.length()<2&&militaryTime==false)
+                {
+                    System.out.print(numbers.get(hour.substring(0)).get(i)+"  ");
+                    System.out.print(numbers.get("10").get(i)+"  ");
+                    System.out.print(numbers.get((minutes.substring(0,1))).get(i)+"  ");
+                    System.out.print(numbers.get((minutes.substring(1))).get(i)+"  ");
+                    if (ampmString.equals("AM")) {
+                        System.out.print(numbers.get("11").get(i));
+                    }
+                    else
+                        System.out.print(numbers.get("12").get(i));
+                    System.out.println();
+
+                }
+                else if(hour.length()>1&&militaryTime==false)
+                {
+                    System.out.print(numbers.get(hour.substring(0,1)).get(i)+"  ");
+                    System.out.print(numbers.get(hour.substring(1)).get(i)+"  ");
+                    System.out.print(numbers.get("10").get(i)+"  ");
+                    System.out.print(numbers.get((minutes.substring(0,1))).get(i)+"  ");
+                    System.out.print(numbers.get((minutes.substring(1))).get(i) + "  ");
+                    if (ampmString.equals("AM")) {
+                        System.out.print(numbers.get("11").get(i));
+                    }
+                    else
+                        System.out.print(numbers.get("12").get(i));
+                    System.out.println();
+                }
+
+                else
+                {
+                    System.out.print(numbers.get(hour.substring(0,1)).get(i)+"  ");
+                    System.out.print(numbers.get(hour.substring(1)).get(i)+"  ");
+                    System.out.print(numbers.get("10").get(i)+"  ");
+                    System.out.print(numbers.get((minutes.substring(0,1))).get(i)+"  ");
+                    System.out.print(numbers.get((minutes.substring(1))).get(i));
+                    System.out.println();
+                }
+            }
 
 
 
