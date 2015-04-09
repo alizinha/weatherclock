@@ -19,7 +19,7 @@ public class DST
     public static void getDSTDates(HashMap<Integer, Calendar> startDates, HashMap<Integer, Calendar> endDates)
     {
         ArrayList<String> lines = FileTools
-                .readLinesFromFile("/Users/c4q-Allison/Desktop/accesscode/weatherclock/dst.csv");
+                .readLinesFromFile("./weatherclock/dst.csv");
         for(String line : lines)
         {
             // Split the start and end date at the comma.

@@ -17,8 +17,7 @@ public class Holidays {
      *   A map from date to holiday name for holidays.
      */
     public static HashMap<Calendar, String> getHolidays(String holidayType) {
-        // TODO (from ehtesh) use the relative path
-        ArrayList<String> lines = FileTools.readLinesFromFile("/Users/c4q-Allison/Desktop/accesscode/weatherclock/holidays.csv");
+        ArrayList<String> lines = FileTools.readLinesFromFile("./weatherclock/holidays.csv");
         HashMap<Calendar, String> holidays = new HashMap<Calendar, String>();
         for (String line : lines) {
             // Each line is of the form "date,name,type", where "date" is a date
