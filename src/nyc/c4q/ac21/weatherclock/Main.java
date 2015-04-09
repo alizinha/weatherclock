@@ -10,7 +10,7 @@ import java.util.HashMap;
 public class Main {
 
     /**
-     * Jae made this - Returns sunset time for the current day.
+     * Jae made this - Returns sunrise time for the current day.
      */
     public static Calendar getSunrise() {
         URL url = HTTP.stringToURL("http://api.openweathermap.org/data/2.5/weather?q=New%20York,NY");
@@ -101,12 +101,11 @@ public class Main {
             terminal.moveTo(5, xPosition);
             terminal.write(date);
 
-            // Write the day of the week in green on a blue background.
-            String dayOfWeek = DateTime.getDayOfWeekNames().get(cal.get(Calendar.DAY_OF_WEEK));
-            terminal.setTextColor(AnsiTerminal.Color.GREEN);
-            terminal.setBackgroundColor(AnsiTerminal.Color.BLUE);
-            terminal.moveTo(7, xPosition);
-            terminal.write("  " + dayOfWeek + "  ");
+            // Write sunrise time in dark yellow. -- Allison
+            String sunriseTime = DateTime.formatTime(sunrise, false);
+            terminal.setTextColor(AnsiTerminal.Color.YELLOW, false);
+            terminal.moveTo(7, xPosition - 2);
+            terminal.write("sunrise at " + sunriseTime);
 
             // Set the background color back to black.
             terminal.setBackgroundColor(AnsiTerminal.Color.BLACK);
@@ -124,21 +123,28 @@ public class Main {
             terminal.moveTo(11, xPosition);
             terminal.write(dst);
 
-            //Write the holiday if today is a national holiday. --Allison working on this.
-            //**need to add a String here that is empty to start**
+            //Write the holiday if today is a national holiday. --Allison did this.
             terminal.setTextColor(AnsiTerminal.Color.BLUE, false);
             terminal.setBackgroundColor(AnsiTerminal.Color.GREEN);
             terminal.moveTo(13, xPosition);
             terminal.write(Holidays.getHolidayStatus(cal));
 
-            //todo allison print mini calendar
+            //allison-- print mini calendar
+            terminal.setTextColor(AnsiTerminal.Color.BLUE, false);
+            terminal.setBackgroundColor(AnsiTerminal.Color.GREEN);
+            terminal.moveTo(15, xPosition);
+            CalendarPrinter.printMonthCalendar(cal);
 
-            //todo allison print Day of Week and full date
-            //
-            Object key = cal.get(Calendar.DAY_OF_WEEK);
+            //allison--print Day of week, Name of month, date, and year (e.g.: "Wednesday, April 8, 2015")
 
-            HashMap<Integer, String> hash = DateTime.getDayOfWeekNames();
-            String currentDAY = hash.get(key);
+            String dayOfWeek = DateTime.getDayOfWeekNames().get(cal.get(Calendar.DAY_OF_WEEK));
+            String nameOfMonth = DateTime.getMonthNames().get(cal.get(Calendar.MONTH));
+            terminal.setTextColor(AnsiTerminal.Color.BLUE, false);
+            terminal.setBackgroundColor(AnsiTerminal.Color.GREEN);
+            terminal.moveTo(17, xPosition);
+            terminal.write(dayOfWeek + ", " + nameOfMonth + " " + DateTime.allisonsMethod(cal));
+
+
 
 
 

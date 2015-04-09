@@ -12,7 +12,15 @@ public class DateTime {
     public static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("h:mm");
     public static final SimpleDateFormat TIME_FORMAT_SECS = new SimpleDateFormat("h:mm:ss");
     public static final SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:MM");
+    public static final SimpleDateFormat FANCY_DATE_FORMAT = new SimpleDateFormat("d, yyyy");
 
+
+    public static String allisonsMethod(Calendar cal) {
+        if (cal == null)
+            return null;
+        else
+            return FANCY_DATE_FORMAT.format(cal.getTime());
+    }
     /**
      * Formats a 'Calendar' object as a date.
      * @param cal
@@ -90,7 +98,7 @@ public class DateTime {
         return cal;
     }
 
-    /**
+    /**Using this with what I constructed in the Main--Allison
      * Builds and returns a map from integers representing days of the week to their names.
      * @return
      *   A map with keys 'Calendar.MONDAY' through 'Calendar.SUNDAY' with corresponding names as values.

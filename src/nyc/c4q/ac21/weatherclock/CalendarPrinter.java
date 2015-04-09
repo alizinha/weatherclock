@@ -32,7 +32,7 @@ public class CalendarPrinter
 
         // First, show the month name and year.
         System.out.println(DateTime.getMonthNames().get(month) + " " + year);
-
+        System.out.println("Su  Mo  Tu  We  Th  Fr  Sa");
         // Start the calendar on the first day of the month.
         Calendar cal = Calendar.getInstance();
         cal.set(year, month, 1);
