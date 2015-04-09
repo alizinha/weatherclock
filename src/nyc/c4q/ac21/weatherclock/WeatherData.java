@@ -1,8 +1,7 @@
 package nyc.c4q.ac21.weatherclock;
 /**
- * Created by c4q-madelyntavarez on 4/8/15.
+ * Created by c4q-tashasmith on 4/9/15.
  */
-
 
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
@@ -19,7 +18,7 @@ public class WeatherData
     {
         URL mine = HTTP.stringToURL(url);
         String url1 = HTTP.get(mine);
-        object= (JSONObject) JSONValue.parse(url1);
+        object = (JSONObject) JSONValue.parse(url1);
     }
 
     public Double getTemp()
@@ -28,10 +27,16 @@ public class WeatherData
 
         JSONObject main;
         main = (JSONObject) object.get("main");
-        if (main==null) return null;
+        if(main == null)
+        {
+            return null;
+        }
         Double temp = (Double) main.get("temp");
         temp = ((temp - 273) * 2) + 30;
-        if (temp==null) return null;
+        if(temp == null)
+        {
+            return null;
+        }
 
 
         return temp;
@@ -41,10 +46,16 @@ public class WeatherData
     {
 
         JSONObject main = (JSONObject) object.get("main");
-        if (main==null) return null;
+        if(main == null)
+        {
+            return null;
+        }
         Double pressure = (Double) main.get("pressure");
         pressure = (pressure * 0.02952998751);
-        if (pressure==null) return null;
+        if(pressure == null)
+        {
+            return null;
+        }
 
         return pressure;
     }
@@ -52,12 +63,18 @@ public class WeatherData
     public Long getHumidity()
     {
         JSONObject main = (JSONObject) object.get("main");
-        if (main==null) return null;
+        if(main == null)
+        {
+            return null;
+        }
         Long humidity = (Long) main.get("humidity");
-        if(humidity==null) return null;
+        if(humidity == null)
+        {
+            return null;
+        }
         return humidity;
     }
 
 
-
 }
+
