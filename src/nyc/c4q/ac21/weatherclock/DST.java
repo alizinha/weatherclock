@@ -18,8 +18,7 @@ public class DST
      */
     public static void getDSTDates(HashMap<Integer, Calendar> startDates, HashMap<Integer, Calendar> endDates)
     {
-        ArrayList<String> lines = FileTools
-                .readLinesFromFile("/Users/c4q-tashasmith/Desktop/weatherclock/dst.csv");
+        ArrayList<String> lines = FileTools.readLinesFromFile("./weatherclock/dst.csv");
         for(String line : lines)
         {
             // Split the start and end date at the comma.
@@ -55,7 +54,7 @@ public class DST
         // Is the given date after the start and before the end?
         return date.compareTo(dstStart) == 1 && date.compareTo(dstEnd) == - 1;
     }
-// Allison added this portion below (and also added the call in the Main.java class).
+    // Allison added this portion below (and also added the call in the Main.java class).
     public static String getDSTStatus(Calendar date)
     {
         String dst = "";
@@ -69,4 +68,3 @@ public class DST
     }
 
 }
-

@@ -21,7 +21,7 @@ public class Main {
      * Returns sunrise time for the current day (Jaellys).
      */
     public static Calendar getSunrise() {
-        URL url = HTTP.stringToURL("http://api.openweathermap.org/data/2.5/weather?q=New%20York,NY");
+        URL url = HTTP.stringToURL("http://api.openweathermap.org/data/2.5/weather?q=New%20York");
         String doc = HTTP.get(url);
         JSONObject obj = (JSONObject) JSONValue.parse(doc);
 
@@ -38,7 +38,7 @@ public class Main {
      * SAMPLE CODE: Returns sunset time for the current day.
      */
     public static Calendar getSunset() {
-        URL url = HTTP.stringToURL("http://api.openweathermap.org/data/2.5/weather?q=New%20York,NY");
+        URL url = HTTP.stringToURL("http://api.openweathermap.org/data/2.5/weather?q=New%20York");
         String doc = HTTP.get(url);
         JSONObject obj = (JSONObject) JSONValue.parse(doc);
 
