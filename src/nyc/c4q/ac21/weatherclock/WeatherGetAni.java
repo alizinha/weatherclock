@@ -32,7 +32,7 @@ public class WeatherGetAni
 
         // Creating JSON parsing object.
         JSONParser parser = new JSONParser();
-        JSONObject obj = (JSONObject)parser.parse(new FileReader("/Users/jaellysbales/Desktop/accesscode/weatherclock/src/nyc/c4q/ac21/weatherclock/weather.json"));
+        JSONObject obj = (JSONObject)parser.parse(new FileReader("/Users/c4q-tashasmith/Desktop/weatherclock/src/nyc/c4q/ac21/weatherclock/weather.json"));
 
         // Retrieving API data.
         JSONArray weatherJSONArray = (JSONArray) obj.get("weather");
